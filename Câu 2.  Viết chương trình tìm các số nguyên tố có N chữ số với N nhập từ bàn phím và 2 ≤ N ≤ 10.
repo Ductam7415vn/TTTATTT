@@ -1,0 +1,43 @@
+Viết chương trình tìm các số nguyên tố có N chữ số với N nhập từ bàn phím và 2 ≤ N ≤ 10.
+
+#include <stdio.h>
+#include <math.h>
+
+// Hàm kiểm tra số nguyên tố
+int isPrime(int num) {
+    if (num <= 1) return 0; // Số nhỏ hơn hoặc bằng 1 không phải là số nguyên tố
+    if (num <= 3) return 1; // Số 2 và 3 là số nguyên tố
+    if (num % 2 == 0 || num % 3 == 0) return 0; // Chia hết cho 2 hoặc 3 thì không phải số nguyên tố
+
+    for (int i = 5; i * i <= num; i += 6) { 
+        if (num % i == 0 || num % (i + 2) == 0) return 0; // áp dụng quy luật số nguyên tố tố 6k ± 1
+    }
+    return 1;
+}
+
+int main() {
+    int N;
+    // Nhập giá trị của N từ bàn phím
+    printf("Nhập số chữ số N (2 ≤ N ≤ 10): ");
+    scanf("%d", &N);
+
+    if (N < 2 || N > 10) {
+        printf("Giá trị N không hợp lệ. Vui lòng nhập giá trị trong khoảng từ 2 đến 10.\n");
+        return 1;
+    }
+
+    // Tìm số nguyên tố có N chữ số
+    int start = pow(10, N - 1); // Số nhỏ nhất có N chữ số
+    int end = pow(10, N) - 1; // Số lớn nhất có N chữ số
+
+    printf("Các số nguyên tố có %d chữ số là:\n", N);
+    for (int i = start; i <= end; i++) {
+        if (isPrime(i)) {
+            printf("%d ", i);
+        }
+    }
+    printf("\n");
+
+    return 0;
+}
+
