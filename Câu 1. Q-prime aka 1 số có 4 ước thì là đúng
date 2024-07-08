@@ -1,0 +1,53 @@
+Câu 1 Một số gọi là Q-prime khi nó có đúng 4 ước số nguyên dương. Hãy viết chương
+trình in ra các số Q-Prime nhỏ hơn hoặc bằng một số N cho trước nhập từ bàn phím.
+
+#include <stdio.h>
+
+// Hàm đếm số lượng ước số của một số cho trước
+int countDivisors(int num) {
+    int count = 0;
+    for (int i = 1; i <= num; i++) {
+        if (num % i == 0) {
+            count++;
+        }
+    }
+    return count;
+}
+
+// Hàm in ra các số Q-prime nhỏ hơn hoặc bằng N
+void printQPrimes(int N) {
+    printf("Các số Q-prime nhỏ hơn hoặc bằng %d là:\n", N);
+    for (int i = 1; i <= N; i++) {
+        if (countDivisors(i) == 4) {
+            printf("%d ", i);
+        }
+    }
+    printf("\n");
+}
+
+int main() {
+    int N;
+    // Nhập giá trị của N từ bàn phím
+    printf("Nhập một số: ");
+    scanf("%d", &N);
+
+    // In ra các số Q-prime nhỏ hơn hoặc bằng N
+    printQPrimes(N);
+
+    return 0;
+}
+
+	1.	Hàm countDivisors:
+	•	Hàm này nhận vào một số nguyên num và trả về số lượng ước số của nó.
+	•	Một vòng lặp chạy từ 1 đến num, kiểm tra xem i có phải là ước số của num hay không bằng cách kiểm tra num % i == 0.
+	•	Nếu i là ước số, biến đếm count sẽ được tăng lên.
+
+	2.	Hàm printQPrimes:
+	•	Hàm này nhận vào một số nguyên N và in ra tất cả các số Q-prime nhỏ hơn hoặc bằng N.
+	•	Một vòng lặp chạy từ 1 đến N, kiểm tra xem số lượng ước số của i (sử dụng hàm countDivisors) có bằng đúng 4 hay không.
+	•	Nếu một số có đúng 4 ước số, nó sẽ được in ra như một số Q-prime.
+
+	3.	Hàm main:
+	•	Đây là điểm bắt đầu của chương trình.
+	•	Chương trình yêu cầu người dùng nhập một số N.
+	•	Sau đó, chương trình gọi hàm printQPrimes để in ra tất cả các số Q-prime nhỏ hơn hoặc bằng N.
