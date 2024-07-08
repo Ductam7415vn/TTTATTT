@@ -1,0 +1,90 @@
+Câu 3. Cho một số nguyên dương N, gọi:
+- k là số ước nguyên tố của N;
+- q là tổng của các ước nguyên tố của N;
+- p là tổng của các ước số của N;
+- s là số ước của N;
+
+#include <stdio.h>
+#include <math.h>
+
+// Hàm kiểm tra số nguyên tố
+int isPrime(int num) {
+    if (num <= 1) return 0; // Số nhỏ hơn hoặc bằng 1 không phải là số nguyên tố
+    if (num <= 3) return 1; // Số 2 và 3 là số nguyên tố
+    if (num % 2 == 0 || num % 3 == 0) return 0; // Chia hết cho 2 hoặc 3 thì không phải số nguyên tố
+
+    for (int i = 5; i * i <= num; i += 6) {
+        if (num % i == 0 || num % (i + 2) == 0) return 0;
+    }
+    return 1;
+}
+
+// Hàm tìm số lượng và tổng các ước nguyên tố của N
+void findPrimeFactors(int N, int *k, int *q) {
+    *k = 0; // Số lượng ước nguyên tố
+    *q = 0; // Tổng của các ước nguyên tố
+
+    // Kiểm tra 2 có là ước nguyên tố của N không
+    if (N % 2 == 0) {
+        (*k)++;
+        *q += 2;
+        while (N % 2 == 0) { 
+            N /= 2;
+        } //sử dụng để loại bỏ tất cả các bội số của 2 ra khỏi  N .
+    }
+
+    // Kiểm tra các số lẻ từ 3 trở lên
+    for (int i = 3; i <= sqrt(N); i += 2) {
+        if (N % i == 0) {
+            if (isPrime(i)) {
+                (*k)++;
+                *q += i;
+            }
+            while (N % i == 0) {
+                N /= i;
+            }
+        }
+    }
+
+    // Kiểm tra nếu N là số nguyên tố lớn hơn 2
+    if (N > 2) {
+        (*k)++;
+        *q += N;
+    }
+}
+
+// Hàm tìm tổng và số lượng các ước số của N
+void findDivisors(int N, int *s, int *p) {
+    *s = 0; // Số lượng ước số
+    *p = 0; // Tổng các ước số
+
+    for (int i = 1; i <= N; i++) {
+        if (N % i == 0) {
+            (*s)++;
+            *p += i;
+        }
+    }
+}
+
+int main() {
+    int N;
+    // Nhập giá trị của N từ bàn phím
+    printf("Nhập số nguyên dương N: ");
+    scanf("%d", &N);
+
+    int k, q, s, p;
+
+    // Tìm số lượng và tổng các ước nguyên tố của N
+    findPrimeFactors(N, &k, &q);
+
+    // Tìm số lượng và tổng các ước số của N
+    findDivisors(N, &s, &p);
+
+    // In kết quả
+    printf("Số lượng ước nguyên tố của %d: %d\n", N, k);
+    printf("Tổng các ước nguyên tố của %d: %d\n", N, q);
+    printf("Số lượng các ước số của %d: %d\n", N, s);
+    printf("Tổng các ước số của %d: %d\n", N, p);
+
+    return 0;
+}
