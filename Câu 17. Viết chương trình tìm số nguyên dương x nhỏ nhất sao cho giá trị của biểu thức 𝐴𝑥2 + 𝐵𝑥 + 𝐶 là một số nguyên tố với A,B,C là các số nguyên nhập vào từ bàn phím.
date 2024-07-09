@@ -1,0 +1,42 @@
+Viết chương trình tìm số nguyên dương x nhỏ nhất sao cho giá trị của biểu thức
+𝐴𝑥2 + 𝐵𝑥 + 𝐶 là một số nguyên tố với A,B,C là các số nguyên nhập vào từ bàn phím.
+
+#include <stdio.h>
+#include <math.h>
+
+// Hàm kiểm tra xem một số có phải là số nguyên tố hay không
+int is_prime(int num) {
+    if (num <= 1) return 0;
+    if (num == 2) return 1;
+    if (num % 2 == 0) return 0;
+    for (int i = 3; i <= sqrt(num); i += 2) {
+        if (num % i == 0) return 0;
+    }
+    return 1;
+}
+
+int find_min_x(int A, int B, int C) {
+    int x = 1;
+    while (1) {
+        int value = A * x * x + B * x + C;
+        if (is_prime(value)) {
+            return x;
+        }
+        x++;
+    }
+}
+
+int main() {
+    int A, B, C;
+    printf("Nhap gia tri cua A: ");
+    scanf("%d", &A);
+    printf("Nhap gia tri cua B: ");
+    scanf("%d", &B);
+    printf("Nhap gia tri cua C: ");
+    scanf("%d", &C);
+
+    int x = find_min_x(A, B, C);
+    printf("So nguyen duong x nho nhat la: %d\n", x);
+
+    return 0;
+}
