@@ -1,0 +1,43 @@
+Viết chương trình in ra các cặp số (A,B) nằm trong khoảng (M,N) sao cho ước
+số chung lớn nhất của A và B có giá trị là một số D cho trước. Với M,N,D nhập vào từ
+bàn phím. (0<M,N, D < 1000)
+
+
+#include <stdio.h>
+
+// Hàm tính ước số chung lớn nhất (GCD)
+int gcd(int a, int b) {
+    while (b != 0) {
+        int temp = b;
+        b = a % b;
+        a = temp;
+    }
+    return a;
+}
+
+int main() {
+    int M, N, D;
+
+    // Nhập giá trị M, N, D từ bàn phím
+    printf("Nhap M: ");
+    scanf("%d", &M);
+    printf("Nhap N: ");
+    scanf("%d", &N);
+    printf("Nhap D: ");
+    scanf("%d", &D);
+
+    // Duyệt qua các cặp số (A, B) trong khoảng (M, N)
+    for (int A = M; A <= N; A++) {
+        for (int B = A + 1; B <= N; B++) { // Bắt đầu từ A+1 để tránh đối xứng và trùng lặp
+            // Tính ước số chung lớn nhất của A và B
+            int common_gcd = gcd(A, B);
+
+            // Kiểm tra xem ước số chung lớn nhất có bằng D không
+            if (common_gcd == D) {
+                printf("(%d, %d)\n", A, B);
+            }
+        }
+    }
+
+    return 0;
+}
