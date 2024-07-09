@@ -1,0 +1,49 @@
+Viết chương trình tìm bốn số nguyên tố liên tiếp, sao cho tổng của chúng là số
+nguyên tố nhỏ hơn hoặc bằng N (với N được nhập vào từ bàn phím).
+
+
+#include <stdio.h>
+#include <math.h>
+
+// Hàm kiểm tra xem một số có phải là số nguyên tố hay không
+int is_prime(int num) {
+    if (num <= 1) return 0; // Số nhỏ hơn hoặc bằng 1 không phải số nguyên tố
+    if (num == 2) return 1; // 2 là số nguyên tố
+    if (num % 2 == 0) return 0; // Các số chẵn lớn hơn 2 không phải số nguyên tố
+    for (int i = 3; i <= sqrt(num); i += 2) {
+        if (num % i == 0) return 0; // Nếu có ước số khác 1 và chính nó thì không phải số nguyên tố
+    }
+    return 1; // Các trường hợp còn lại là số nguyên tố
+}
+
+// Hàm tìm và in ra bốn số nguyên tố liên tiếp có tổng là số nguyên tố và nhỏ hơn hoặc bằng N
+void find_four_consecutive_primes(int N) {
+    int primes[N]; // Mảng để lưu các số nguyên tố từ 2 đến N
+    int prime_count = 0; // Số lượng số nguyên tố
+
+    // Tạo danh sách các số nguyên tố từ 2 đến N
+    for (int num = 2; num <= N; ++num) {
+        if (is_prime(num)) {
+            primes[prime_count++] = num;
+        }
+    }
+
+    // Tìm và in ra các bốn số nguyên tố liên tiếp có tổng cũng là số nguyên tố và nhỏ hơn hoặc bằng N
+    for (int i = 0; i < prime_count - 3; ++i) {
+        int sum = primes[i] + primes[i + 1] + primes[i + 2] + primes[i + 3];
+        if (sum <= N && is_prime(sum)) {
+            printf("%d %d %d %d\n", primes[i], primes[i + 1], primes[i + 2], primes[i + 3]);
+        }
+    }
+}
+
+int main() {
+    int N;
+    printf("Nhap so N: ");
+    scanf("%d", &N);
+
+    // Gọi hàm để tìm và in ra bốn số nguyên tố liên tiếp có tổng là số nguyên tố và nhỏ hơn hoặc bằng N
+    find_four_consecutive_primes(N);
+
+    return 0;
+}
