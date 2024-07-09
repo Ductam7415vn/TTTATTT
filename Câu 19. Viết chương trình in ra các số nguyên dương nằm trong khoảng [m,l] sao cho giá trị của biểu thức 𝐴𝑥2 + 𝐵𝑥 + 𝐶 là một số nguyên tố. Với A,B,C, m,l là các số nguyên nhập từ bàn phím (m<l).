@@ -1,0 +1,50 @@
+Viết chương trình in ra các số nguyên dương nằm trong khoảng [m,l] sao cho giá
+trị của biểu thức 𝐴𝑥2 + 𝐵𝑥 + 𝐶 là một số nguyên tố. Với A,B,C, m,l là các số nguyên
+nhập từ bàn phím (m<l).
+
+
+#include <stdio.h>
+#include <math.h>
+
+// Hàm kiểm tra xem một số nguyên có phải là số nguyên tố hay không
+int is_prime(int number) {
+    if (number < 2) return 0; // Số nguyên tố phải lớn hơn 1
+    if (number == 2) return 1; // 2 là số nguyên tố đặc biệt
+
+    // Kiểm tra từ 2 đến căn bậc hai của number
+    for (int i = 2; i <= sqrt(number); i++) {
+        if (number % i == 0) {
+            return 0; // Nếu chia hết cho số nào đó thì không phải số nguyên tố
+        }
+    }
+    return 1; // Nếu không chia hết cho số nào thì là số nguyên tố
+}
+
+int main() {
+    int A, B, C, m, l;
+
+    // Nhập giá trị A, B, C, m, l từ bàn phím
+    printf("Nhap A: ");
+    scanf("%d", &A);
+    printf("Nhap B: ");
+    scanf("%d", &B);
+    printf("Nhap C: ");
+    scanf("%d", &C);
+    printf("Nhap m: ");
+    scanf("%d", &m);
+    printf("Nhap l (l > m): ");
+    scanf("%d", &l);
+
+    // Duyệt qua các số nguyên từ m đến l
+    for (int x = m; x <= l; x++) {
+        // Tính giá trị của biểu thức Ax^2 + Bx + C
+        int expression_value = A * x * x + B * x + C;
+
+        // Kiểm tra xem giá trị của biểu thức có phải là số nguyên tố hay không
+        if (is_prime(expression_value)) {
+            printf("%d\n", x);
+        }
+    }
+
+    return 0;
+}
