@@ -1,0 +1,46 @@
+Hai số tạo thành một cặp số thân thiết khi chúng tuân theo quy luật: Số này bằng
+tổng tất cả các ước của số kia (trừ chính số đó) và ngược lại. Viết chương trình tìm hai số
+dạng này nhỏ hơn N (với N nhập vào từ bàn phím).
+
+
+#include <stdio.h>
+
+// Hàm tính tổng các ước của một số trừ chính nó
+int sum_of_divisors(int num) {
+    int sum = 0;
+    for (int i = 1; i <= num / 2; i++) { // Chỉ cần kiểm tra đến num / 2
+        if (num % i == 0) {
+            sum += i;
+        }
+    }
+    return sum;
+}
+
+// Hàm tìm và in các cặp số thân thiết nhỏ hơn N
+void find_amicable_numbers(int N) {
+    for (int i = 1; i < N; i++) {
+        int sum1 = sum_of_divisors(i);
+        if (sum1 > i && sum1 < N) { 
+            // Kiểm tra các số lớn hơn i và nhỏ hơn N
+            // tránh việc in cùng một cặp số hai lần (một lần dưới dạng (i, sum1) và một lần dưới dạng (sum1, i)).
+            int sum2 = sum_of_divisors(sum1);
+            if (sum2 == i) { // Kiểm tra cặp số thân thiết
+                printf("(%d, %d)\n", i, sum1);
+            }
+        }
+    }
+}
+
+int main() {
+    int N;
+    
+    // Nhập giá trị của N từ bàn phím
+    printf("Nhập một số nguyên dương N: ");
+    scanf("%d", &N);
+    
+    // Tìm và in các cặp số thân thiết nhỏ hơn N
+    printf("Các cặp số thân thiết nhỏ hơn %d là:\n", N);
+    find_amicable_numbers(N);
+    
+    return 0;
+}
