@@ -1,0 +1,33 @@
+Viết chương trình Hai số nguyên tố sinh đôi là hai số nguyên tố hơn kém nhau 2
+đơn vị. Tìm hai số nguyên tố sinh đôi nhỏ hơn hoặc bằng N, với N được nhập vào từ bàn
+phím.
+
+
+#include <stdio.h>
+#include <math.h>
+
+// Hàm kiểm tra xem một số có phải là số nguyên tố hay không
+int is_prime(int num) {
+    if (num <= 1) return 0;
+    if (num == 2) return 1;
+    if (num % 2 == 0) return 0;
+    for (int i = 3; i <= sqrt(num); i += 2) {
+        if (num % i == 0) return 0;
+    }
+    return 1;
+}
+
+int main() {
+    int N;
+    printf("Nhap so N: ");
+    scanf("%d", &N);
+
+    // Duyệt qua các số từ 2 đến N-2 để tìm cặp số nguyên tố sinh đôi
+    for (int i = 2; i <= N - 2; ++i) {
+        if (is_prime(i) && is_prime(i + 2)) {
+            printf("Cap so nguyen to sinh doi: %d va %d\n", i, i + 2);
+        }
+    }
+
+    return 0;
+}
