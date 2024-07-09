@@ -1,0 +1,47 @@
+Viết chương trình tìm số nguyên tố có ba chữ số, biết rằng nếu viết số đó theo
+thứ tự ngược lại thì ta được một số là lập phương của một số tự nhiên.
+
+
+#include <stdio.h>
+#include <math.h>
+
+// Hàm kiểm tra xem một số có phải là số nguyên tố hay không
+int is_prime(int num) {
+    if (num <= 1) return 0;
+    if (num == 2) return 1;
+    if (num % 2 == 0) return 0;
+    for (int i = 3; i <= sqrt(num); i += 2) {
+        if (num % i == 0) return 0;
+    }
+    return 1;
+}
+
+// Hàm kiểm tra xem một số có phải là lập phương của một số tự nhiên hay không
+int is_perfect_cube(int num) {
+    int root = round(cbrt(num));
+    return (root * root * root == num);
+}
+
+// Hàm đảo ngược số
+int reverse_number(int num) {
+    int reversed = 0;
+    while (num > 0) {
+        reversed = reversed * 10 + (num % 10);
+        num /= 10;
+    }
+    return reversed;
+}
+
+int main() {
+    // Duyệt qua các số có ba chữ số
+    for (int i = 100; i <= 999; ++i) {
+        if (is_prime(i)) {
+            int reversed = reverse_number(i);
+            if (is_perfect_cube(reversed)) {
+                printf("So nguyen to can tim la: %d\n", i);
+            }
+        }
+    }
+
+    return 0;
+}
