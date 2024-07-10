@@ -1,0 +1,58 @@
+Với một số nguyên dương N thoả mãn 0<N<10000, đặt:
+F ( N ) = N nếu N là một số nguyên tố
+F ( N ) = 0 nếu là hợp số
+Cho L và R nhập vào từ bàn phím, với mọi cặp i , j trong khoảng [ L , R ] hãy viết chương trình
+in ra màn hình giá trị của tổng F ( i ) * F ( j ) với j > i.
+
+
+#include <stdio.h>
+#include <math.h>
+
+// Hàm kiểm tra xem một số có phải là số nguyên tố hay không
+int is_prime(int number) {
+    if (number < 2) return 0; // Số nguyên tố phải lớn hơn 1
+    if (number == 2) return 1; // 2 là số nguyên tố đặc biệt
+
+    for (int i = 2; i <= sqrt(number); i++) {
+        if (number % i == 0) {
+            return 0; // Không phải số nguyên tố nếu chia hết cho số nào đó
+        }
+    }
+    return 1; // Là số nguyên tố nếu không chia hết cho số nào
+}
+
+// Hàm tính giá trị của F(N)
+int F(int N) {
+    if (is_prime(N)) {
+        return N; // Nếu là số nguyên tố, trả về chính nó
+    } else {
+        return 0; // Nếu không phải, trả về 0
+    }
+}
+
+int main() {
+    int L, R;
+
+    // Nhập giá trị L và R từ bàn phím
+    printf("Nhap L: ");
+    scanf("%d", &L);
+    printf("Nhap R: ");
+    scanf("%d", &R);
+
+    long long total_sum = 0;
+
+    // Duyệt qua tất cả các cặp số (i, j) với L <= i < j <= R
+    for (int i = L; i <= R; i++) {
+        for (int j = i + 1; j <= R; j++) {
+            // Tính giá trị của F(i) * F(j)
+            int fi = F(i);
+            int fj = F(j);
+            total_sum += (long long)fi * fj;
+        }
+    }
+
+    // In ra kết quả
+    printf("Tong F(i) * F(j) voi j > i trong khoang [%d, %d] la: %lld\n", L, R, total_sum);
+
+    return 0;
+}
