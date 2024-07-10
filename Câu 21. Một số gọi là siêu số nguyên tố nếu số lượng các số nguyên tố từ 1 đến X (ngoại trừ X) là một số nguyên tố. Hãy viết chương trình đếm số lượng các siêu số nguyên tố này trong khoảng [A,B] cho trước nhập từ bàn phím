@@ -1,0 +1,61 @@
+Một số gọi là siêu số nguyên tố nếu số lượng các số nguyên tố từ 1 đến X (ngoại
+trừ X) là một số nguyên tố. Hãy viết chương trình đếm số lượng các siêu số nguyên tố
+này trong khoảng [A,B] cho trước nhập từ bàn phím
+
+
+#include <stdio.h>
+#include <math.h>
+
+// Hàm kiểm tra xem một số có phải là số nguyên tố hay không
+int is_prime(int number) {
+    if (number < 2) return 0; // Số nguyên tố phải lớn hơn 1
+    if (number == 2) return 1; // 2 là số nguyên tố đặc biệt
+
+    for (int i = 2; i <= sqrt(number); i++) {
+        if (number % i == 0) {
+            return 0; // Không phải số nguyên tố nếu chia hết cho số nào đó
+        }
+    }
+    return 1; // Là số nguyên tố nếu không chia hết cho số nào
+}
+
+// Hàm đếm số lượng các số nguyên tố từ 1 đến X-1
+int count_primes(int X) {
+    int count = 0;
+    for (int i = 1; i < X; i++) {
+        if (is_prime(i)) {
+            count++;
+        }
+    }
+    return count;
+}
+
+// Hàm kiểm tra xem một số có phải là siêu số nguyên tố hay không
+int is_super_prime(int X) {
+    int prime_count = count_primes(X);
+    return is_prime(prime_count);
+}
+
+int main() {
+    int A, B;
+
+    // Nhập giá trị A và B từ bàn phím
+    printf("Nhap A: ");
+    scanf("%d", &A);
+    printf("Nhap B: ");
+    scanf("%d", &B);
+
+    int super_prime_count = 0;
+
+    // Duyệt qua tất cả các số trong khoảng [A, B]
+    for (int i = A; i <= B; i++) {
+        if (is_super_prime(i)) {
+            super_prime_count++;
+        }
+    }
+
+    // In ra số lượng các siêu số nguyên tố
+    printf("So luong sieu so nguyen to trong khoang [%d, %d] la: %d\n", A, B, super_prime_count);
+
+    return 0;
+}
