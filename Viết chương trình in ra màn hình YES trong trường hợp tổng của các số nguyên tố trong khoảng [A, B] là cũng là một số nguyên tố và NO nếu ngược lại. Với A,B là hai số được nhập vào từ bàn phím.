@@ -1,0 +1,48 @@
+Viết chương trình in ra màn hình YES trong trường hợp tổng của các số nguyên tố trong
+khoảng [A, B] là cũng là một số nguyên tố và NO nếu ngược lại. Với A,B là hai số được nhập
+vào từ bàn phím.
+
+
+#include <stdio.h>
+#include <math.h>
+
+// Hàm kiểm tra xem một số có phải là số nguyên tố hay không
+int is_prime(int number) {
+    if (number < 2) return 0; // Số nguyên tố phải lớn hơn 1
+    if (number == 2) return 1; // 2 là số nguyên tố đặc biệt
+
+    for (int i = 2; i <= sqrt(number); i++) {
+        if (number % i == 0) {
+            return 0; // Không phải số nguyên tố nếu chia hết cho số nào đó
+        }
+    }
+    return 1; // Là số nguyên tố nếu không chia hết cho số nào
+}
+
+int main() {
+    int A, B;
+
+    // Nhập giá trị A và B từ bàn phím
+    printf("Nhap A: ");
+    scanf("%d", &A);
+    printf("Nhap B: ");
+    scanf("%d", &B);
+
+    int total_sum = 0;
+
+    // Duyệt qua tất cả các số trong khoảng [A, B]
+    for (int i = A; i <= B; i++) {
+        if (is_prime(i)) {
+            total_sum += i;
+        }
+    }
+
+    // Kiểm tra xem tổng này có phải là số nguyên tố hay không
+    if (is_prime(total_sum)) {
+        printf("YES\n");
+    } else {
+        printf("NO\n");
+    }
+
+    return 0;
+}
