@@ -1,0 +1,91 @@
+Áp dụng theo các thuật toán đã được học trong phần lí thuyết em hãy cài đặt
+chương trình:
+- Tìm số nguyên tố k gần nhất với phần số của mã số sinh viên của mình (trong
+trường hợp khoảng cách bằng nhau thì lấy số nhỏ hơn).
+- Từ số k tìm được tính ak mod n với a = SBD, n = 123456.
+
+#include <stdio.h>
+#include <math.h>
+
+// Hàm kiểm tra xem một số có phải là số nguyên tố hay không
+int is_prime(int number) {
+    if (number <= 1) return 0; // Không phải số nguyên tố
+    if (number <= 3) return 1; // 2 và 3 là số nguyên tố
+    if (number % 2 == 0 || number % 3 == 0) return 0; // Loại bỏ các bội số của 2 và 3
+
+    for (int i = 5; i * i <= number; i += 6) {
+        if (number % i == 0 || number % (i + 2) == 0) {
+            return 0; // Không phải số nguyên tố
+        }
+    }
+    return 1; // Là số nguyên tố
+}
+
+// Hàm tìm số nguyên tố liền trước MSV
+int find_previous_prime(int MSV) {
+    while (!is_prime(MSV)) {
+        MSV--;
+    }
+    return MSV;
+}
+
+// Hàm tìm số nguyên tố liền sau MSV
+int find_next_prime(int MSV) {
+    while (!is_prime(MSV)) {
+        MSV++;
+    }
+    return MSV;
+}
+
+int modular_exponentiation(int base, int exponent, int modulus) {
+    int result = 1;
+    base = base % modulus;
+    while (exponent > 0) {
+        if (exponent % 2 == 1) { // Nếu exponent là lẻ
+            result = (result * base) % modulus;
+        }
+        exponent = exponent >> 1; // exponent = exponent / 2
+        base = (base * base) % modulus;
+    }
+    return result;
+}
+
+int main() {
+    int MSV, SBD, MSVd, MSVt, cduoi = 0, ctren = 0;
+
+    printf("Nhap MSV: ");
+    scanf("%d", &MSV);
+    printf("Nhap SBD: ");
+    scanf("%d", &SBD);
+
+    // Tìm số nguyên tố liền trước và liền sau MSV
+    MSVd = find_previous_prime(MSV);
+    MSVt = find_next_prime(MSV);
+    int n = 123456;
+    int k = MSV;
+    int a = SBD;
+    int b = 1;
+    int K[50] = {0}; // Mảng lưu trữ biểu diễn nhị phân của k
+    int j = 0;
+
+    while (k > 0) {
+        K[j] = k % 2;
+        k = k / 2;
+        j++;
+    }
+
+    if (K[0] == 1) {
+        b = a;
+    }
+
+    for (int i = 0; i < j; i++) {
+        a = modular_exponentiation(a, 2, n);
+        if (K[i] == 1) {
+            b = modular_exponentiation(b, a, n);
+        }
+    }
+
+    printf("%d ^ %d mod %d = %d\n", SBD, MSV, n, b);
+
+    return 0;
+}
