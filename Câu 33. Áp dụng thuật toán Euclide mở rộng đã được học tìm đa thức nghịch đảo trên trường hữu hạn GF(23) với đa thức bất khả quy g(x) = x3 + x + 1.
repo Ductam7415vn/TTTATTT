@@ -1,0 +1,131 @@
+Câu 33. Áp dụng thuật toán Euclide mở rộng đã được học tìm đa thức nghịch đảo trên
+trường hữu hạn GF(23) với đa thức bất khả quy g(x) = x3 + x + 1.
+
+
+#include <stdio.h>
+
+void reload_arrays(int *array, int size) {
+    for (int i = 0; i < size; i++) {
+        array[i] = 0;
+    }
+}
+
+void input_array(int *array, int size, char *message) {
+    printf("%s", message);
+    for (int i = size; i >= 0; i--) {
+        scanf("%d", &array[i]);
+    }
+}
+
+void multiply_and_subtract(int *a, int *b, int *q, int *c, int at, int bt, int qt) {
+    for (int i = at; i >= bt; i--) {
+        q[i - bt] = a[i] * b[bt];
+        for (int k = i; k >= 0; k--) {
+            if ((k - i + bt) >= 0) {
+                a[k] = a[k] - q[i - bt] * b[k - i + bt];
+            }
+            if (a[k] < 0) {
+                a[k] += 2;
+            }
+        }
+    }
+}
+
+void multiply_polynomials(int *a, int *b, int *c, int qt) {
+    for (int i = 0; i <= qt; i++) {
+        for (int j = 0; j <= qt; j++) {
+            int check = a[i] + b[j];
+            if (check == 2) {
+                if (c[i + j] != 1) {
+                    c[i + j] = 1;
+                } else {
+                    c[i + j] = 0;
+                }
+            }
+        }
+    }
+}
+
+void print_polynomial(int *array, int size) {
+    for (int i = size; i >= 0; i--) {
+        if (array[i] == 1 && i != 0) {
+            printf("x^%d", i);
+            if (i != 0 && array[0] != 0) {
+                printf(" + ");
+            }
+        }
+    }
+    if (array[0] == 1) {
+        printf("1\n");
+    }
+}
+
+int main() {
+    int t;
+    printf("Nhap truong huu han 2^t: ");
+    scanf("%d", &t);
+
+    int a[10], b[10], q[10], r[10], x[10], y[10], xa[10], xb[10], ya[10], yb[10], v[10], g[10], c[10];
+
+    reload_arrays(a, 10);
+    reload_arrays(b, 10);
+    reload_arrays(q, 10);
+    reload_arrays(r, 10);
+    reload_arrays(x, 10);
+    reload_arrays(y, 10);
+    reload_arrays(xa, 10);
+    reload_arrays(xb, 10);
+    reload_arrays(ya, 10);
+    reload_arrays(yb, 10);
+    reload_arrays(v, 10);
+    reload_arrays(g, 10);
+    reload_arrays(c, 10);
+
+    input_array(a, t, "Nhap he so da thuc a[i]: ");
+    input_array(b, t, "Nhap he so da thuc b[i]: ");
+
+    int at = 0, bt = 0, qt = 0, rt = 0, checkb = 1, ct = 0;
+
+    for (int i = t; i >= 0; i--) {
+        if (a[i] == 1) {
+            at = i;
+            g[i] = a[i];
+        }
+        if (b[i] == 1) {
+            bt = i;
+        }
+    }
+
+    xa[0] = 0;
+    xb[0] = 1;
+    ya[0] = 1;
+    yb[0] = ct = 0;
+
+    while (checkb > 0) {
+        multiply_and_subtract(a, b, q, c, at, bt, qt);
+
+        for (int i = 0; i <= 5; i++) {
+            if (a[i] == 1) {
+                at = i;
+            }
+            if (q[i] == 1) {
+                qt = i;
+            }
+        }
+
+        for (int i = 0; i <= t; i++) {
+            r[i] = a[i];
+            if (a[i] == 1) {
+                rt = i;
+            }
+        }
+
+        multiply_polynomials(xa, q, c, qt);
+        multiply_polynomials(ya, q, c, qt);
+
+        print_polynomial(yb, t);
+        checkb = b[bt] == 1 ? 1 : 0;
+    }
+
+    return 0;
+}
