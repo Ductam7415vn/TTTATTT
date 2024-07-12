@@ -1,0 +1,50 @@
+Một số được gọi là số mạnh mẽ khi nó đồng thời vừa chia hết cho số nguyên tố
+và chia hết cho bình phương của số nguyên tố đó. Tìm số mạnh mẽ nhỏ hơn số N cho
+trước (N < 10000).
+
+
+#include <stdio.h>
+#include <stdbool.h>
+#include <math.h>
+
+// Hàm kiểm tra xem một số có phải là số nguyên tố hay không
+bool is_prime(int number) {
+    if (number < 2) return false;
+    for (int i = 2; i * i <= number; i++) {
+        if (number % i == 0) return false;
+    }
+    return true;
+}
+
+// Hàm tìm các số mạnh mẽ nhỏ hơn N
+void find_strong_numbers(int N) {
+    printf("Cac so manh me nho hon %d la:\n", N);
+    for (int i = 2; i < N; i++) {
+        bool is_strong = false;
+        for (int j = 2; j <= sqrt(i); j++) {
+            if (is_prime(j) && i % (j * j) == 0) {
+                is_strong = true;
+                break;
+            }
+        }
+        if (is_strong) {
+            printf("%d ", i);
+        }
+    }
+    printf("\n");
+}
+
+int main() {
+    int N;
+    printf("Nhap N (N < 10000): ");
+    scanf("%d", &N);
+
+    if (N >= 10000 || N <= 0) {
+        printf("Gia tri N khong hop le!\n");
+        return 1;
+    }
+
+    find_strong_numbers(N);
+
+    return 0;
+}
