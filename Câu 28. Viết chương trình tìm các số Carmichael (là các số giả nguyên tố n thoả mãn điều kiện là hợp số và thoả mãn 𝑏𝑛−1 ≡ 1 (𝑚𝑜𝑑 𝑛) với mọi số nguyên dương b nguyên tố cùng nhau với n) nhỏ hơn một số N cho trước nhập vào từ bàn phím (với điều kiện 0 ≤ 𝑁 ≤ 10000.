@@ -1,0 +1,73 @@
+Viết chương trình tìm các số Carmichael (là các số giả nguyên tố n thoả mãn
+điều kiện là hợp số và thoả mãn 𝑏𝑛−1 ≡ 1 (𝑚𝑜𝑑 𝑛) với mọi số nguyên dương b nguyên
+tố cùng nhau với n) nhỏ hơn một số N cho trước nhập vào từ bàn phím (với điều kiện 0 ≤
+𝑁 ≤ 10000.
+
+
+#include <stdio.h>
+#include <stdbool.h>
+
+// Hàm kiểm tra tính nguyên tố
+bool is_prime(int number) {
+    if (number < 2) return false;
+    for (int i = 2; i * i <= number; i++) {
+        if (number % i == 0) return false;
+    }
+    return true;
+}
+
+// Hàm tính lũy thừa theo mô đun
+int modular_exponentiation(int base, int exp, int mod) {
+    int result = 1;
+    base = base % mod;
+    while (exp > 0) {
+        if (exp % 2 == 1)
+            result = (result * base) % mod;
+        exp = exp >> 1;
+        base = (base * base) % mod;
+    }
+    return result;
+}
+
+// Hàm tìm UCLN (GCD) của hai số
+int gcd(int a, int b) {
+    while (b != 0) {
+        int t = b;
+        b = a % b;
+        a = t;
+    }
+    return a;
+}
+
+// Hàm kiểm tra tính Carmichael của một số
+bool is_carmichael(int n) {
+    if (is_prime(n)) return false; // n phải là hợp số
+    for (int b = 2; b < n; b++) {
+        if (gcd(b, n) == 1) { // b và n phải nguyên tố cùng nhau
+            if (modular_exponentiation(b, n - 1, n) != 1)
+                return false;
+        }
+    }
+    return true;
+}
+
+
+int main() {
+    int N;
+    printf("Nhap N (0 <= N <= 10000): ");
+    scanf("%d", &N);
+
+    if (N < 0 || N > 10000) {
+        printf("Gia tri N khong hop le!\n");
+        return 1;
+    }
+
+    printf("Cac so Carmichael nho hon %d la:\n", N);
+    for (int n = 2; n < N; n++) {
+        if (is_carmichael(n)) {
+            printf("%d\n", n);
+        }
+    }
+
+    return 0;
+}
