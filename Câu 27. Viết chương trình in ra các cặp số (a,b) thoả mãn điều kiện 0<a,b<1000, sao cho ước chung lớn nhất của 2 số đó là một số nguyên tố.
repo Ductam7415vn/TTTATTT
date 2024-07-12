@@ -1,0 +1,44 @@
+Câu 27. Viết chương trình in ra các cặp số (a,b) thoả mãn điều kiện 0<a,b<1000, sao cho ước
+chung lớn nhất của 2 số đó là một số nguyên tố.
+
+
+#include <stdio.h>
+#include <stdbool.h>
+#include <math.h>
+
+// Hàm kiểm tra xem một số có phải là số nguyên tố hay không
+bool is_prime(int number) {
+    if (number < 2) return false;
+    for (int i = 2; i * i <= number; i++) {
+        if (number % i == 0) return false;
+    }
+    return true;
+}
+
+// Hàm tìm ước chung lớn nhất (GCD) của hai số
+int gcd(int a, int b) {
+    while (b != 0) {
+        int t = b;
+        b = a % b;
+        a = t;
+    }
+    return a;
+}
+
+// Hàm in ra các cặp số (a, b) thoả mãn điều kiện GCD(a, b) là số nguyên tố
+void find_pairs_with_prime_gcd() {
+    printf("Cac cap so (a, b) thoa man dieu kien GCD(a, b) la so nguyen to:\n");
+    for (int a = 1; a < 1000; a++) {
+        for (int b = 1; b < 1000; b++) {
+            int g = gcd(a, b);
+            if (is_prime(g)) {
+                printf("(%d, %d)\n", a, b);
+            }
+        }
+    }
+}
+
+int main() {
+    find_pairs_with_prime_gcd();
+    return 0;
+}
