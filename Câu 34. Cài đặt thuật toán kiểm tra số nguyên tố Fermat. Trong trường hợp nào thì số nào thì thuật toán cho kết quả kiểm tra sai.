@@ -1,0 +1,72 @@
+Câu 34. Cài đặt thuật toán kiểm tra số nguyên tố Fermat. Trong trường hợp nào thì số
+nào thì thuật toán cho kết quả kiểm tra sai.
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+// Hàm tính a^b mod m bằng phương pháp nhanh chóng
+int modularExponentiation(int a, int b, int m) {
+    int result = 1;
+    a = a % m;
+
+    while (b > 0) {
+        if (b % 2 == 1) {
+            result = (result * a) % m;
+        }
+        b = b >> 1;
+        a = (a * a) % m;
+    }
+    return result;
+}
+// Kiểm tra xem n có phải là số nguyên tố hay không dựa trên thuật toán Fermat
+int isPrimeFermat(int n, int t) {
+    if (n < 3 || n % 2 == 0) {
+        printf("\nSo n phai la so le va lon hon hoac bang 3. Xin moi nhap lai!\n");
+        return 0;
+    }
+
+    srand(time(NULL)); // Khởi tạo seed cho hàm rand()
+
+    for (int i = 1; i <= t; i++) {
+        printf("\n----------------\nLan lap %d", i);
+        
+        int a = 0;
+        while (a < 2 || a >= n - 2) {
+            a = rand() % n;
+        }
+        printf("\n ran = %d", a);
+
+        // Tính r = a^(n-1) mod n
+        int r = modularExponentiation(a, n - 1, n);
+
+        printf("\nr = %d", r);
+
+        if (r != 1) {
+            printf("\n%d la hop so", n);
+            return 0; // Không phải số nguyên tố
+        }
+    }
+
+    printf("\n%d la so nguyen to", n);
+    return 1; // Là số nguyên tố
+}
+
+
+
+int main() {
+    int n, t;
+    printf("\nNhap n: ");
+    scanf("%d", &n);
+
+    printf("\nNhap so lan lap: ");
+    scanf("%d", &t);
+
+    while (!isPrimeFermat(n, t)) {
+        printf("\nNhap lai n: ");
+        scanf("%d", &n);
+    }
+
+    return 0;
+}
