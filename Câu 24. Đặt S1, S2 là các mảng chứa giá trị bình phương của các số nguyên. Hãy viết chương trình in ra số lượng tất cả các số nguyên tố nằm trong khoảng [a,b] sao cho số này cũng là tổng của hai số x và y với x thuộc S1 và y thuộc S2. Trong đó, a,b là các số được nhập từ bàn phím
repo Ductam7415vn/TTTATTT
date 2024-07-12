@@ -1,0 +1,64 @@
+Đặt S1, S2 là các mảng chứa giá trị bình phương của các số nguyên. Hãy viết chương
+trình in ra số lượng tất cả các số nguyên tố nằm trong khoảng [a,b] sao cho số này cũng là tổng
+của hai số x và y với x thuộc S1 và y thuộc S2. Trong đó, a,b là các số được nhập từ bàn phím
+
+
+#include <stdio.h>
+#include <math.h>
+
+// Hàm kiểm tra xem một số có phải là số nguyên tố hay không
+int is_prime(int number) {
+    if (number < 2) return 0; // Số nguyên tố phải lớn hơn 1
+    if (number == 2) return 1; // 2 là số nguyên tố đặc biệt
+
+    for (int i = 2; i <= sqrt(number); i++) {
+        if (number % i == 0) {
+            return 0; // Không phải số nguyên tố nếu chia hết cho số nào đó
+        }
+    }
+    return 1; // Là số nguyên tố nếu không chia hết cho số nào
+}
+
+int main() {
+    int a, b;
+
+    // Nhập giá trị a và b từ bàn phím
+    printf("Nhap a: ");
+    scanf("%d", &a);
+    printf("Nhap b: ");
+    scanf("%d", &b);
+
+    // Tạo mảng S1 và S2 chứa giá trị bình phương của các số nguyên
+    int S1[100], S2[100];
+    for (int i = 0; i < 100; i++) {
+        S1[i] = i * i;
+        S2[i] = i * i;
+    }
+
+    int prime_count = 0;
+
+    // Duyệt qua tất cả các số trong khoảng [a, b]
+    for (int number = a; number <= b; number++) {
+        if (is_prime(number)) {
+            // Kiểm tra xem số đó có thể biểu diễn dưới dạng tổng của một phần tử trong S1 và một phần tử trong S2
+            int found = 0;
+            for (int i = 0; i < 100 && S1[i] < number; i++) {
+                for (int j = 0; j < 100 && S2[j] < number; j++) {
+                    if (S1[i] + S2[j] == number) {
+                        found = 1;
+                        break;
+                    }
+                }
+                if (found) break;
+            }
+            if (found) {
+                prime_count++;
+            }
+        }
+    }
+
+    // In ra số lượng các số nguyên tố thỏa mãn điều kiện
+    printf("So luong cac so nguyen to trong khoang [%d, %d] la: %d\n", a, b, prime_count);
+
+    return 0;
+}
