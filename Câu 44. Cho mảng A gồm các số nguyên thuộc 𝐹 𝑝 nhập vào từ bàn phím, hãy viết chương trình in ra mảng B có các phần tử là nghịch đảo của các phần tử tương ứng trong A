@@ -1,0 +1,76 @@
+Cho mảng A gồm các số nguyên thuộc 𝐹 𝑝 nhập vào từ bàn phím, hãy viết chương
+trình in ra mảng B có các phần tử là nghịch đảo của các phần tử tương ứng trong A
+
+
+#include<stdio.h>
+#include<math.h>
+
+// Hàm tính ước chung lớn nhất của hai số
+int gcd(int a, int b) {
+    while (b != 0) {
+        int temp = a % b;
+        a = b;
+        b = temp;
+    }
+    return a;
+}
+
+// Hàm tìm nghịch đảo modulo của a mod p
+int modInverse(int a, int p) {
+    int m = p, t, q;
+    int x0 = 0, x1 = 1;
+    if (p == 1) return 0;
+    while (a > 1) {
+        q = a / p;
+        t = p;
+        p = a % p, a = t;
+        t = x0;
+        x0 = x1 - q * x0;
+        x1 = t;
+    }
+    if (x1 < 0) x1 += m;
+    return x1;
+}
+
+int main() {
+    int phantu, p;
+    printf("\nNhap p: "); scanf("%d", &p);
+    printf("Nhap so phan tu trong mang: "); scanf("%d", &phantu);
+
+    int mang[phantu];
+    printf("Nhap cac phan tu cua mang, hay de so nay va p co gcd bang mot nhe \n");
+    
+    // Nhập các phần tử của mảng và kiểm tra gcd với p
+    for (int e = 0; e < phantu; e++) {
+        label:
+        printf("A[%d] = ", e); scanf("%d", &mang[e]);
+
+        // Kiểm tra gcd
+        int gcdValue = gcd(mang[e], p);
+        if (gcdValue != 1) {
+            printf("\nHay nhap lai tu dau!\n");
+            goto label;
+        }
+    }
+
+    // In ra mảng A
+    printf("mang A = (");
+    for (int e = 0; e < phantu; e++)
+        printf("  %d  ", mang[e]);
+    printf(")\n");
+
+    // Tính mảng B chứa các phần tử là nghịch đảo modulo của mảng A mod p
+    int mangB[phantu];
+    for (int e = 0; e < phantu; e++) {
+        mangB[e] = modInverse(mang[e], p);
+    }
+
+    // In ra mảng B
+    printf("Ket qua: (");
+    for (int e = 0; e < phantu; e++) {
+        printf(" %d ", mangB[e]);
+    }
+    printf(")\n");
+
+    return 0;
+}
