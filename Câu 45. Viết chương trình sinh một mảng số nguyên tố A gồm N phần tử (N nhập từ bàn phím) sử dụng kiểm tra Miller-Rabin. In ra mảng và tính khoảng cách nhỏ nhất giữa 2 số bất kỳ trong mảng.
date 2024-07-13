@@ -1,0 +1,126 @@
+Viết chương trình sinh một mảng số nguyên tố A gồm N phần tử (N nhập từ bàn phím)
+sử dụng kiểm tra Miller-Rabin. In ra mảng và tính khoảng cách nhỏ nhất giữa 2 số bất kỳ trong
+mảng.
+
+
+#include<stdio.h>
+#include<math.h>
+#include<stdlib.h>
+
+// Hàm kiểm tra số nguyên tố
+int isPrime(int n) {
+    if (n <= 1) return 0;
+    if (n <= 3) return 1;
+    if (n % 2 == 0 || n % 3 == 0) return 0;
+    for (int i = 5; i * i <= n; i += 6) {
+        if (n % i == 0 || n % (i + 2) == 0) return 0;
+    }
+    return 1;
+}
+
+int main() {
+    int phantu, t;
+    printf("\nNhap N: "); scanf("%d", &phantu);
+    printf("So lan lap: "); scanf("%d", &t);
+
+    int mang[phantu];
+
+    for (int e = 0; e < phantu; e++) {
+        int random = 0;
+        while (random < 2 || random >= 1000) {
+            random = rand();
+        }
+        int n = random;
+
+        // Tìm r và s thỏa mãn n-1 = r*2^s
+        int r, s, trunggian;
+        trunggian = n - 1;
+        r = trunggian;
+        s = 0;
+        while (r % 2 == 0) {
+            r /= 2;
+            s++;
+        }
+
+        int isPrimeFlag = 1;
+        for (int i = 1; i <= t; i++) {
+            int a = 0, ran;
+            while (a < 2 || a >= (n - 2)) {
+                ran = rand();
+                a = ran;
+            }
+
+            int b = 1, A = a, m = n;
+            int nhiphan, R[20], j = 0;
+            nhiphan = r;
+
+            while (nhiphan > 0) {
+                R[j] = nhiphan % 2;
+                nhiphan = (nhiphan - R[j]) / 2;
+                j++;
+            }
+
+            if (r == 1) b = a;
+
+            for (int d = 0; d < j; d++) {
+                A = (A * A) % m;
+                if (R[d] == 1) b = (A * b) % m;
+            }
+
+            int y = b;
+            if (y != 1 && y != n - 1) {
+                int j = 1;
+                while (j <= (s - 1) && y != n - 1) {
+                    y = (y * y) % n;
+                    if (y == 1) {
+                        isPrimeFlag = 0;
+                        break;
+                    }
+                    j++;
+                }
+                if (y != n - 1) {
+                    isPrimeFlag = 0;
+                }
+            }
+
+            if (isPrimeFlag) {
+                mang[e] = n;
+                break; // Thoát vòng lặp khi tìm được số nguyên tố
+            }
+        }
+    }
+
+    // In ra mảng A
+    printf("\nCac phan tu trong mang la:\nA (");
+    for (int e = 0; e < phantu; e++)
+        printf("%d  ", mang[e]);
+    printf(")\n");
+
+    // Sắp xếp mảng
+    for (int e = 0; e < phantu - 1; e++) {
+        for (int vt = e + 1; vt < phantu; vt++) {
+            if (mang[e] > mang[vt]) {
+                int phu = mang[e];
+                mang[e] = mang[vt];
+                mang[vt] = phu;
+            }
+        }
+    }
+
+    // In ra mảng sau khi sắp xếp
+    printf("Mang sau sap xep:\nA (");
+    for (int e = 0; e < phantu; e++)
+        printf("%d  ", mang[e]);
+    printf(")\n");
+
+    // Tìm khoảng cách nhỏ nhất
+    int min = 200;
+    for (int e = 0; e < phantu - 1; e++) {
+        int hieu = abs(mang[e] - mang[e + 1]);
+        if (hieu < min)
+            min = hieu;
+    }
+    printf("Khoang cach nho nhat la: %d\n", min);
+
+    return 0;
+}
