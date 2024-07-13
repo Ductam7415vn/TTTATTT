@@ -1,0 +1,77 @@
+Cho các số nguyên dương a,k,n, nhập từ bàn phím (0<a,k<n<1000), Viết chương
+trình xác định xem ak mod n có phải là một số nguyên tố hay không (sử dụng thuật toán
+bình phương và nhân có lặp)?
+
+
+#include <stdio.h>
+#include <math.h>
+#include <stdbool.h>
+
+// Hàm kiểm tra số nguyên tố
+bool kiemTraNguyenTo(int so) {
+    if (so <= 1) return false;
+    for (int i = 2; i <= sqrt(so); i++) {
+        if (so % i == 0) return false;
+    }
+    return true;
+}
+
+// Hàm chuyển đổi số thập phân thành nhị phân và lưu vào mảng K
+int chuyenNhiPhan(int k, int K[]) {
+    int i = 0;
+    while (k > 0) {
+        K[i] = k % 2;
+        k = k / 2;
+        i++;
+    }
+    return i; // Trả về độ dài của mảng K
+}
+
+// Hàm tính toán A^k mod n
+int tinhLuyThuaMod(int a, int k, int n) {
+    int K[50];
+    int d = chuyenNhiPhan(k, K); // Chuyển k thành nhị phân và lấy độ dài mảng K
+
+    int A = a;
+    int b = (K[0] == 1) ? a : 1; // Nếu bit đầu tiên của K là 1 thì b = a, ngược lại b = 1
+
+    for (int i = 1; i < d; i++) {
+        A = (A * A) % n; // Bình phương A và lấy modulo n
+        if (K[i] == 1) {
+            b = (A * b) % n; // Nếu bit thứ i của K là 1 thì b = A * b % n
+        }
+    }
+
+    return b;
+}
+
+int main() {
+    int a, k, n;
+    printf("\nNhap a: ");
+    scanf("%d", &a);
+    printf("\nNhap so mu k: ");
+    scanf("%d", &k);
+    printf("\nNhap n: ");
+    scanf("%d", &n);
+
+    int ketQua;
+
+    if (k == 0) {
+        ketQua = (n == 1) ? 0 : 1; // Nếu k = 0, trả về 0 hoặc 1 dựa vào n
+    } else if (k == 1) {
+        ketQua = a % n; // Nếu k = 1, kết quả là a % n
+    } else {
+        ketQua = tinhLuyThuaMod(a, k, n); // Tính A^k mod n
+    }
+
+    printf("\nKet qua = %d\n", ketQua);
+
+    // Kiểm tra và thông báo kết quả có phải là số nguyên tố hay không
+    if (kiemTraNguyenTo(ketQua)) {
+        printf("Day la so nguyen to\n");
+    } else {
+        printf("Day khong phai so nguyen to\n");
+    }
+
+    return 0;
+}
