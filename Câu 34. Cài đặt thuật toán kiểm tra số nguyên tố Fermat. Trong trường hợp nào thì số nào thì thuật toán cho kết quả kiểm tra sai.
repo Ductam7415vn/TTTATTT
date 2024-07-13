@@ -4,6 +4,51 @@ nào thì thuật toán cho kết quả kiểm tra sai.
 
 #include <stdio.h>
 #include <stdlib.h>
+
+// Hàm tính lũy thừa modulo
+int modular_exponentiation(int base, int exp, int mod) {
+    int result = 1;
+    base = base % mod;
+    while (exp > 0) {
+        if (exp % 2 == 1)
+            result = (result * base) % mod;
+        exp = exp >> 1;
+        base = (base * base) % mod;
+    }
+    return result;
+}
+
+// Hàm kiểm tra số nguyên tố sử dụng thuật toán Fermat
+int fermat_primality_test(int n, int k) {
+    if (n <= 1 || n == 4) return 0; // Hợp số
+    if (n <= 3) return 1; // Nguyên tố
+    
+    // Kiểm tra k lần
+    for (int i = 0; i < k; i++) {
+        int a = 2 + rand() % (n - 4); // Chọn ngẫu nhiên a trong khoảng [2, n-2]
+        if (modular_exponentiation(a, n-1, n) != 1)
+            return 0; // Hợp số
+    }
+    
+    return 1; // Có thể là nguyên tố
+}
+
+int main() {
+    int n, k;
+    printf("Nhap so can kiem tra: "); scanf("%d", &n);
+    printf("Nhap so lan lap: "); scanf("%d", &k);
+    
+    if (fermat_primality_test(n, k))
+        printf("%d la so nguyen to.\n", n);
+    else
+        printf("%d khong phai la so nguyen to.\n", n);
+    
+    return 0;
+}
+
+
+#include <stdio.h>
+#include <stdlib.h>
 #include <time.h>
 
 // Hàm tính a^b mod m bằng phương pháp nhanh chóng
