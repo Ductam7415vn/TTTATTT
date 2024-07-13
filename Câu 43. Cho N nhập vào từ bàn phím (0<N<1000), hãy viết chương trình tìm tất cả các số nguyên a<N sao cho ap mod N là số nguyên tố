@@ -1,0 +1,75 @@
+Cho N nhập vào từ bàn phím (0<N<1000), hãy viết chương trình tìm tất cả các
+số nguyên a<N sao cho ap mod N là số nguyên tố
+
+
+#include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <time.h> 
+
+// Hàm kiểm tra số nguyên tố
+bool kiemTraNguyenTo(int n) {
+    if (n <= 1) return false;
+    for (int i = 2; i <= sqrt(n); i++) {
+        if (n % i == 0) return false;
+    }
+    return true;
+}
+
+// Hàm sinh số nguyên tố ngẫu nhiên trong khoảng [2, max]
+int sinhSoNguyenTo(int max) {
+    int soNguyenTo;
+    do {
+        soNguyenTo = 2 + rand() % (max - 1);
+    } while (!kiemTraNguyenTo(soNguyenTo));
+    return soNguyenTo;
+}
+
+// Hàm chuyển đổi số thập phân thành nhị phân và lưu vào mảng K
+int chuyenNhiPhan(int k, int K[]) {
+    int j = 0;
+    while (k > 0) {
+        K[j] = k % 2;
+        k = (k - K[j]) / 2;
+        j++;
+    }
+    return j; // Trả về độ dài của mảng K
+}
+
+int main() {
+    srand(time(NULL)); // Khởi tạo seed cho hàm rand() từ hàm time(NULL)
+
+    int n;
+    printf("\nNhap N thoa man yeu cau de bai: ");
+    scanf("%d", &n);
+
+    int p = sinhSoNguyenTo(999); // Sinh số nguyên tố p
+
+    printf("Gia tri cua p = %d\n", p);
+    printf("Nhung so a thoa man de bai la: ");
+
+    int K[50];
+    int j = chuyenNhiPhan(p, K); // Chuyển p thành nhị phân và lưu vào mảng K
+
+    for (int d = 1; d < 100; d++) {
+        int a = d;
+        int b = (K[0] == 1) ? a : 1; // Nếu bit đầu tiên của K là 1 thì b = a, ngược lại b = 1
+
+        // Tính a^p mod n
+        for (int i = 0; i < j; i++) {
+            a = (a * a) % n;
+            if (K[i] == 1) {
+                b = (a * b) % n;
+            }
+        }
+
+        if (b == 2) {
+            printf("%d ", d);
+        } else if (kiemTraNguyenTo(b)) {
+            printf("%d ", d);
+        }
+    }
+
+    return 0;
+}
