@@ -1,0 +1,71 @@
+Câu 42. Viết chương trình sinh ra 2 số nguyên tố 0<p,q<1000 và kiểm tra với với số
+0<a<100 thì những số nào thoả mãn: ap mod q là số nguyên tố.
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <time.h>
+
+// Hàm kiểm tra số nguyên tố
+int kiemTraNguyenTo(int n) {
+    if (n <= 1) return 0;
+    for (int i = 2; i <= sqrt(n); i++) {
+        if (n % i == 0) return 0;
+    }
+    return 1;
+}
+
+// Hàm sinh số nguyên tố ngẫu nhiên trong khoảng [2, max]
+int sinhSoNguyenTo(int max) {
+    int soNguyenTo;
+    do {
+        soNguyenTo = 2 + rand() % (max - 1);
+    } while (!kiemTraNguyenTo(soNguyenTo));
+    return soNguyenTo;
+}
+
+// Hàm chuyển đổi số thập phân thành nhị phân và lưu vào mảng K
+int chuyenNhiPhan(int k, int K[]) {
+    int i = 0;
+    while (k > 0) {
+        K[i] = k % 2;
+        k /= 2;
+        i++;
+    }
+    return i; // Trả về độ dài của mảng K
+}
+
+int main() {
+    srand(time(NULL)); // Khởi tạo seed cho hàm rand()
+
+    int p = sinhSoNguyenTo(999); // Sinh số nguyên tố p
+    int q = sinhSoNguyenTo(999); // Sinh số nguyên tố q
+
+    printf("Gia tri cua p = %d, q = %d\n", p, q);
+    printf("Nhung so a thoa man de bai la: ");
+
+    int K[50];
+    int j = chuyenNhiPhan(p, K); // Chuyển p thành nhị phân và lưu vào mảng K
+
+    for (int d = 1; d < 100; d++) {
+        int a = d;
+        int b = (K[0] == 1) ? a : 1; // Nếu bit đầu tiên của K là 1 thì b = a, ngược lại b = 1
+
+        // Tính a^p mod q
+        for (int i = 0; i < j; i++) {
+            a = (a * a) % q;
+            if (K[i] == 1) {
+                b = (a * b) % q;
+            }
+        }
+
+        if (b == 2) {
+            printf("%d ", d);
+        } else if (kiemTraNguyenTo(b)) {
+            printf("%d ", d);
+        }
+    }
+
+    return 0;
+}
