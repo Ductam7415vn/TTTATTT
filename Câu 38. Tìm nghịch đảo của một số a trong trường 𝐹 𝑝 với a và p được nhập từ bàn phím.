@@ -1,0 +1,59 @@
+Tìm nghịch đảo của một số a trong trường 𝐹 𝑝 với a và p được nhập từ bàn phím.
+
+
+#include <stdio.h>
+#include <math.h>
+
+// Hàm nhập hai số từ người dùng
+void nhapHaiSo(int *a, int *b) {
+    printf("\nNhap hai so duong a, b, a lon hon b:");
+    printf("\nNhap a: "); 
+    scanf("%d", a);
+    printf("\nNhap b: "); 
+    scanf("%d", b);
+}
+
+// Hàm hiển thị kết quả
+void hienThiKetQua(int d, int x, int y) {
+    printf("\n(d,x,y) = (%d,%d,%d)\n", d, x, y);
+}
+
+int main() {
+    int a, b, d, q, r;
+    int x = 1, y = 0; // Giá trị ban đầu của x và y
+    int x1 = 0, x2 = 1, y1 = 1, y2 = 0; // Giá trị ban đầu của các biến x và y tạm thời
+
+    // Nhập hai số a và b từ người dùng
+    nhapHaiSo(&a, &b);
+
+    // Nếu b = 0, kết quả là (d, x, y) = (a, 1, 0)
+    if (b == 0) {
+        d = a;
+        hienThiKetQua(d, x, y);
+        return 1;
+    }
+
+    // Thuật toán Euclid mở rộng
+    while (b > 0) {
+        q = a / b; // Tính thương
+        r = a - q * b; // Tính số dư
+        x = x2 - q * x1; // Cập nhật x
+        y = y2 - q * y1; // Cập nhật y
+
+        // Cập nhật các giá trị
+        a = b;
+        b = r;
+        x2 = x1;
+        x1 = x;
+        y2 = y1;
+        y1 = y;
+    }
+
+    // Kết quả cuối cùng
+    d = a;
+    x = x2;
+    y = y2;
+    hienThiKetQua(d, x, y);
+
+    return 0;
+}
